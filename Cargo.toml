@@ -1,40 +1,28 @@
 # https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [package]
-name                                    = "vfs-zip"
+name                                    = "maulingmonkey-io-adapters"
+publish                                 = false
 version                                 = "0.0.0-git"
 authors                                 = ["MaulingMonkey <git@maulingmonkey.com>"]
-repository                              = "https://github.com/MaulingMonkey/vfs-zip.git"
-documentation                           = "https://docs.rs/vfs-zip/"
+repository                              = "https://github.com/MaulingMonkey/io-adapters"
+# documentation                           = "https://docs.rs/maulingmonkey-io-adapters/"
 edition                                 = "2018"
 license                                 = "Apache-2.0 OR MIT"
 readme                                  = "Readme.md"
-description                             = "vfs-zip: Virtual FileSystem abstractions for ZIP files"
-keywords                                = ["vfs", "virtual", "filesystem", "zip", "archive"]
+description                             = "maulingmonkey-io-adapters: types and traits to adapt I/O types"
+keywords                                = ["read_write_at", "io"]
 categories                              = ["filesystem"]
 exclude = [
     ".vscode/*",
-    "test/data/*",
     "build.rs",     # just use docs.rs
 ]
 
-[features]
-default                                 = ["vfs04", "zip-deflate", "zip-bzip2"]
-zip-deflate                             = ["zip/deflate"]
-zip-bzip2                               = ["zip/bzip2"]
-# non-default
-zip-time                                = ["zip/time"]
-
 [dependencies]
-zip                                     = { package = "zip", version = "0.5.7", default-features = false }
-vfs04                                   = { package = "vfs", version = "0.4", optional = true }
-bzip2                                   = "0.3"
-flate2                                  = "<1.0.16" # 1.0.16 bumps MSRV with "extern crate alloc;"
 read_write_at                           = "0.1.0"
 
 [badges]
-travis-ci = { repository = "MaulingMonkey/vfs-zip", branch = "master" }
+travis-ci = { repository = "MaulingMonkey/io-adapters", branch = "master" }
 
 [package.metadata.docs.rs]
 all-features = true
-rustc-args = ["--cfg", "external_doc"]
