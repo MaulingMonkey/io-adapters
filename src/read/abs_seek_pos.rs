@@ -27,28 +27,10 @@ impl AbsSeekPos {
     }
 
     fn add(cur: u64, off: i64) -> io::Result<u64> {
-        Ok(match PZN::from(off) {
-            PZN::Positive(n)    => cur.checked_add(n).ok_or_else(|| Error::new(ErrorKind::InvalidInput, "Attempted to seek before start of stream"))?,
-            PZN::Zero           => cur,
-            PZN::Negative(n)    => cur.checked_sub(n).ok_or_else(|| Error::new(ErrorKind::InvalidInput, "Attempted to seek past end of stream"))?,
-        })
-    }
-}
-
-enum PZN {
-    Positive(u64),
-    Zero,
-    Negative(u64)
-}
-
-impl From<i64> for PZN {
-    fn from(value: i64) -> Self {
-        if value > 0 {
-            PZN::Positive(value as u64)
-        } else if value < 0 {
-            PZN::Negative(0u64.wrapping_sub(value as u64)) // from(-42) == Negative(0 - - 42) == Negative(42)
+        Ok(if off < 0 {
+            cur.checked_sub(off.unsigned_abs()).ok_or_else(|| Error::new(ErrorKind::InvalidInput, "Attempted to seek before start of stream"))?
         } else {
-            PZN::Zero
-        }
+            cur.checked_add(off.unsigned_abs()).ok_or_else(|| Error::new(ErrorKind::InvalidInput, "Attempted to seek past end of stream"))?
+        })
     }
 }
