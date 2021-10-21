@@ -24,7 +24,14 @@ pub trait IntoCloneReadAtLen {
     fn into_read_at_len(self) -> io::Result<(Self::ReadAt, u64)>;
 }
 
-#[cfg(any(target_os = "redox", unix, target_os = "vxworks", target_os = "hermit", windows))]
+#[cfg(any(
+    unix,
+    windows,
+    target_os = "redox",
+    target_os = "vxworks",
+    target_os = "hermit",
+    //target_os = "wasi", // std::os::wasi::fs::FileExt would work, but it's not yet stable
+))]
 impl IntoCloneReadAtLen for File {
     type ReadAt = SeeklessFile;
     fn into_read_at_len(mut self) -> io::Result<(Self::ReadAt, u64)> {
@@ -33,7 +40,14 @@ impl IntoCloneReadAtLen for File {
     }
 }
 
-#[cfg(not(any(target_os = "redox", unix, target_os = "vxworks", target_os = "hermit", windows)))]
+#[cfg(not(any(
+    unix,
+    windows,
+    target_os = "redox",
+    target_os = "vxworks",
+    target_os = "hermit",
+    //target_os = "wasi", // std::os::wasi::fs::FileExt would work, but it's not yet stable
+)))]
 impl IntoCloneReadAtLen for File {
     type ReadAt = SeeklessSharedIO<File>;
     fn into_read_at_len(mut self) -> io::Result<(Self::ReadAt, u64)> {

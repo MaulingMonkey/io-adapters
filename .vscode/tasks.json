@@ -46,15 +46,22 @@
 
 
         { "label": "1", "dependsOn": [
-            "cargo build --frozen --all-targets",
+            "cargo build --frozen --all-targets",                               // windows
+            "cargo build --frozen --all-targets --target=wasm32-wasi",          // wasi
             "cargo +nightly doc --frozen --no-deps --release",
-            "bash --login -c \"cargo +stable build --locked --all-targets\"",
+            "bash --login -c \"cargo +stable build --locked --all-targets\"",   // linux
         ]},
         {
             "label":            "cargo build --frozen --all-targets",
             "command":          "cargo build --frozen --all-targets",
             "presentation":     { "group": "1" },
             "problemMatcher":   { "base": "$rustc", "owner": "cargo build", "source": "cargo build" },
+        },
+        {
+            "label":            "cargo build --frozen --all-targets --target=wasm32-wasi",
+            "command":          "cargo build --frozen --all-targets --target=wasm32-wasi",
+            "presentation":     { "group": "1" },
+            "problemMatcher":   { "base": "$rustc", "owner": "cargo build wasi", "source": "cargo build wasi" },
         },
         {
             "label":            "cargo +nightly doc --frozen --no-deps --release",

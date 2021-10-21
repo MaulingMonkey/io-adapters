@@ -13,7 +13,13 @@ pub struct SeeklessFile(Arc<std::fs::File>);
 impl From<std::fs::File>      for SeeklessFile { fn from(file:     std::fs::File ) -> Self { Self(Arc::new(file)) } }
 impl From<Arc<std::fs::File>> for SeeklessFile { fn from(file: Arc<std::fs::File>) -> Self { Self(file) } }
 
-#[cfg(any(target_os = "redox", unix, target_os = "vxworks", target_os = "hermit"))] impl ReadAt for SeeklessFile {
+#[cfg(any(
+    unix,
+    target_os = "redox",
+    target_os = "vxworks",
+    target_os = "hermit",
+    //target_os = "wasi", // std::os::wasi::fs::FileExt would work, but it's not yet stable
+))] impl ReadAt for SeeklessFile {
     fn read_at(&self, buf: &mut [u8], offset: u64) -> io::Result<usize> { self.0.read_at(buf, offset) }
     fn read_exact_at(&self, buf: &mut [u8], offset: u64) -> io::Result<()> { self.0.read_exact_at(buf, offset) }
 }

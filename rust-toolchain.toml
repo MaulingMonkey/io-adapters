@@ -1,2 +1,3 @@
 [toolchain]
 channel = "1.54.0" # MSRV
+targets = ["wasm32-wasi"]
