@@ -98,6 +98,10 @@
 
 
         {
+            "label":    "help",
+            "dependsOn": ["open docs"],
+        },
+        {
             "label":    "open docs",
             "command":  "cargo +nightly doc --frozen --no-deps --release --open",
         },
