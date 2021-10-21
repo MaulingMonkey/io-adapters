@@ -8,7 +8,7 @@ use std::ops::Range;
 
 
 /// Adapt [ReadAt] / [Read] / [Seek] into a subrange of the original IO
-pub(crate) struct ReadRange<IO> {
+pub struct ReadRange<IO> {
     io:         IO,
     start:      u64,
     length:     u64,

@@ -8,16 +8,16 @@ use std::io::{self, Read, Seek, SeekFrom};
 
 /// Adapt [ReadAt] back into [Read] + [Seek]
 #[derive(Clone)]
-pub(crate) struct ReadAtCursor<RA: ReadAt> {
+pub struct ReadAtCursor<RA: ReadAt> {
     offset: u64,
     length: u64,
     ra:     RA,
 }
 
 impl<RA: ReadAt> ReadAtCursor<RA> {
-    pub fn new(ra: RA, length: u64) -> Self {
+    pub fn new(ra: RA, offset: u64, length: u64) -> Self {
         Self {
-            offset: 0,
+            offset,
             length,
             ra,
         }
